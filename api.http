@@ -1,31 +1,43 @@
-POST http://localhost:8000/bands
+POST http://localhost:8090/bands
 Content-Type: application/json
 
 {
-    "name": "New Band",
-    "genre": "rock",
-    "albums": [
+    "name": "The Beatles", 
+    "genre": "Rock", 
+    "albums":[
         {
-            "title": "Debut Album",
-            "release_date": "2023-01-01"
+            "title": "Abbey Road", 
+            "release_date": "1969-09-26"
+        },
+        {
+            "title": "Sgt. Pepper's Lonely Hearts Club Band", 
+            "release_date": "1967-05-26"
         }
     ]
 }
 
-###
-GET http://localhost:8000/bands/
 
 ###
-GET http://localhost:8000/bands/1
+GET http://localhost:8090/about/
 
 ###
-GET http://localhost:8000/bands/genre/metal
+GET http://localhost:8090/bands/
 
 ###
-POST http://localhost:8000/bands
+GET http://localhost:8090/bands/2
+
+###
+GET http://localhost:8090/bands/genre/Metal
+
+###
+GET http://localhost:8090/bands/genre/Rock
+
+
+###
+POST http://localhost:8090/bands
 Content-Type: application/json
 
 {
-    "name": "New Band",
-    "genre": "METAL"
+    "name": "Boards of Canada",
+    "genre": "Electronic"
 }

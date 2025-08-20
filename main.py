@@ -1,6 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Path, Query
 from data import BANDS
 from schemas import GenreURLChoices, BandBase, BandCreate, BandWithID
+from typing import Annotated
 
 app = FastAPI()
 
@@ -15,21 +16,35 @@ async def about() -> str:
     return "This is a sample FastAPI application."
 
 
+# @app.get("/bands")
+# async def bands(genre: GenreURLChoices | None = None, has_albums: bool = False) -> list[BandWithID]:
+#     band_list = [BandWithID(**band) for band in BANDS]
+
+#     if genre:
+#         band_list = [band for band in band_list if band.genre.value.lower() == genre.value]
+
+#     if has_albums:
+#         band_list = [band for band in band_list if len(band.albums) > 0]
+
+#     return band_list
+
 @app.get("/bands")
-async def bands(genre: GenreURLChoices | None = None, has_albums: bool = False) -> list[BandWithID]:
+async def bands(genre: GenreURLChoices | None = None, 
+                q: Annotated[str | None, Query(max_length = 10)] = None,
+            ) -> list[BandWithID]:
     band_list = [BandWithID(**band) for band in BANDS]
 
     if genre:
         band_list = [band for band in band_list if band.genre.value.lower() == genre.value]
 
-    if has_albums:
-        band_list = [band for band in band_list if len(band.albums) > 0]
+    if q:
+        band_list = [band for band in band_list if q.lower() in band.name.lower()]
 
     return band_list
 
 
 @app.get("/bands/{band_id}")
-async def bands(band_id: int) -> BandWithID:
+async def bands(band_id: Annotated[int, Path(title="The Band ID")]) -> BandWithID:
     band = next((band for band in BANDS if band["id"] == band_id), None)
     if band is None:
         raise HTTPException(status_code=404, detail="Band not found")
