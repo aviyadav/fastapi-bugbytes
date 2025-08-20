@@ -9,7 +9,11 @@ uv venv
 
 uv add fastapi "uvicorn[standard]" psycopg2-binary sqlmodel
 
+#### run with local data
 uv run uvicorn main:app --reload --port 8090
+
+#### run with local data
+uv run uvicorn main_db:app --reload --port 8090
 
 
 #### docs
